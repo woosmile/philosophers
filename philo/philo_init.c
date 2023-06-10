@@ -1,47 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_utils.c                                      :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/10 17:17:25 by woosekim         ###   ########.fr       */
+/*   Created: 2023/06/10 17:04:59 by woosekim          #+#    #+#             */
+/*   Updated: 2023/06/10 19:30:07 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_double_ptr(char **ptr)
+int	init_philo(t_philo *philos, t_share *share)
 {
-	int	i;
-
-	if (ptr == NULL)
-		return ;
-	i = 0;
-	while (ptr[i])
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free (ptr);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	unsigned char	*arr;
-	size_t			i;
-
-	if ((count * size) / size != count)
-		return (0);
-	arr = (unsigned char *)malloc(count * size);
-	if (!arr)
-		return (0);
-	i = 0;
-	while (i < count * size)
-	{
-		arr[i] = 0;
-		i++;
-	}
-	return ((void *)arr);
+	philos = (t_philo *)malloc(sizeof(t_philo) * share->n_philo);
+	if (pthread_create(philos[0].thread, NULL, test_thread, share))
+		return (1);
+	return (0);
 }

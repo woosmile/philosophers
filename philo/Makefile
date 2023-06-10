@@ -1,6 +1,7 @@
 NAME = philo
+
 CC = cc
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra -g
 
 MAKE = make
 MFLAGS = -C
@@ -14,8 +15,13 @@ philo.h
 INCLUDES = -I.
 
 MANDATORY_SRCS = \
+philo.c \
 philo_utils.c \
-philo.c
+philo_atoi.c \
+philo_split.c \
+philo_share_init.c \
+philo_share_init_utils.c \
+philo_init.c
 
 MANDATORY_OBJS = $(MANDATORY_SRCS:.c=.o)
 
