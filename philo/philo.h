@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:17 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/10 19:30:00 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:35:15 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,22 @@ typedef enum e_status
 	THINK
 }	t_status;
 
+typedef struct s_fork
+{
+	t_mutex	lock;
+	int		in_use;
+}	t_fork;
+
 typedef struct s_share
 {
 	int				n_philo;
-	int				n_eat;
-	int				n_eat_flag;
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
+	int				n_eat;
+	int				n_eat_flag;
 	t_time			time;
-	int				*fork;
-	t_mutex			*fork_lock;
+	t_fork			*fork;
 	t_mutex			print_lock;
 }	t_share;
 
@@ -69,7 +74,7 @@ void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
 int		init_fork(t_share *share);
 
-void	test_thread(t_share *share);
+void	*print_philo(void *share);
 int		init_philo(t_philo *philos, t_share *share);
 
 #endif

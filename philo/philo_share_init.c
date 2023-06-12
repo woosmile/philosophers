@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/10 19:19:30 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/12 20:23:34 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,21 @@ void	input_share(int argv_count, int *value, t_share *share)
 
 int	init_fork(t_share *share)
 {
-	int	id_fl;
+	int	id_f;
 
-	share->fork = (int *)ft_calloc(share->n_philo, sizeof(int));
+	share->fork = (t_fork *)malloc(sizeof(t_fork) * share->n_philo);
 	if (!share->fork)
 		return (1);
-	share->fork_lock = (t_mutex *)malloc(sizeof(t_mutex) * share->n_philo);
-	if (!share->fork_lock)
-		return (1);
-	id_fl = 0;
-	while (id_fl < share->n_philo)
+	id_f = 0;
+	while (id_f < share->n_philo)
 	{
-		if (pthread_mutex_init(&(share->fork_lock[id_fl]), NULL))
+		if (pthread_mutex_init(&(share->fork[id_f].lock), NULL))
 			return (1);
-		id_fl++;
+		share->fork[id_f].in_use = 0;
+		id_f++;
 	}
+	if (pthread_mutex_init(&(share->print_lock), NULL))
+		return (1);
 	return (0);
 }
 
@@ -125,6 +125,8 @@ int	init_share(int ac, char **av, t_share *share)
 	input_share(argv_count, value, share);
 	free(value);
 	if (check_share(share))
+		return (1);
+	if (gettimeofday(&(share->time), NULL) == -1)
 		return (1);
 	if (init_fork(share))
 		return (1);

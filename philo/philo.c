@@ -6,22 +6,28 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:13 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/10 19:29:49 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/12 21:12:14 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	test_thread(t_share *share)
+void	*print_philo(void *philo_temp)
 {
-	int	i;
+	t_philo	*philo;
+	double	time_gap;
 
-	i = 0;
-	while (i < 101)
-	{
-		i++;
-		printf("%d : test\n", i);
-	}
+	philo = (t_philo *)philo_temp;
+	//pthread_mutex_lock(&(philo->share->print_lock));
+	time_gap = (philo->time.tv_sec - philo->share->time.tv_sec) + \
+				((philo->time.tv_usec - philo->share->time.tv_usec) / 1000000);
+	time_gap = time_gap * 1000;
+	printf("%d %d print thread\n", (int)time_gap, philo->index);
+	usleep(100);
+	if (gettimeofday(&(philo->time), NULL) == -1)
+		return (NULL);
+	//pthread_mutex_unlock(&(philo->share->print_lock));
+	return (NULL);
 }
 
 int	main(int ac, char **av)
@@ -33,10 +39,10 @@ int	main(int ac, char **av)
 		return (1);
 	if (init_share(ac, av, &share))
 		return (1);
-	printf("n_philo : %d | t_die : %d | t_eat : %d | t_sleep : %d | n_eat : %d | n_eat_flag : %d\n", \
-	share.n_philo, share.t_die, share.t_eat, share.t_sleep, share.n_eat, share.n_eat_flag);
+	philos = (t_philo *)malloc(sizeof(t_philo) * share.n_philo);
+	if (!philos)
+		return (1);
 	if (init_philo(philos, &share))
 		return (1);
-	pthread_join(philo)
 	return (0);
 }
