@@ -6,30 +6,47 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:13 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/12 21:12:14 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:50:50 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*print_philo(void *philo_temp)
+void	*eat_spaghetti(void *philo_temp)
 {
 	t_philo	*philo;
-	double	time_gap;
+	t_time	time;
+	double	time_diff;
+	double	time_usec_diff;
 
 	philo = (t_philo *)philo_temp;
-	//pthread_mutex_lock(&(philo->share->print_lock));
-	time_gap = (philo->time.tv_sec - philo->share->time.tv_sec) + \
-				((philo->time.tv_usec - philo->share->time.tv_usec) / 1000000);
-	time_gap = time_gap * 1000;
-	printf("%d %d print thread\n", (int)time_gap, philo->index);
-	usleep(100);
-	if (gettimeofday(&(philo->time), NULL) == -1)
+	if (gettimeofday(&(time), NULL) == -1)
 		return (NULL);
-	//pthread_mutex_unlock(&(philo->share->print_lock));
+	// pthread_mutex_lock(&(philo->share->print_lock));
+	time_diff = (time.tv_sec - philo->time.tv_sec) * 1000;
+	time_usec_diff = (time.tv_usec - philo->time.tv_usec) / 1000;
+	time_diff = time_diff + time_usec_diff;
+	if (time_diff + philo->share->t_eat > philo->share->t_die)
+		philo->status = DIE;
+	else
+	{
+		philo->status = EAT;
+		usleep(philo->share->t_eat * 1000);
+		time_diff = (time.tv_sec - philo->share->time.tv_sec) * 1000;
+		time_usec_diff = (time.tv_usec - philo->share->time.tv_usec) / 1000;
+		time_diff = time_diff + time_usec_diff;
+		printf("%d %d is eating\n", (int)time_diff, philo->index);
+	}
+	// pthread_mutex_unlock(&(philo->share->print_lock));
 	return (NULL);
-}
 
+}
+/*
+void	sleep()
+{
+	
+}
+*/
 int	main(int ac, char **av)
 {
 	t_share	share;
@@ -42,7 +59,6 @@ int	main(int ac, char **av)
 	philos = (t_philo *)malloc(sizeof(t_philo) * share.n_philo);
 	if (!philos)
 		return (1);
-	if (init_philo(philos, &share))
-		return (1);
+	init_philo(philos, &share);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:17 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/12 21:35:15 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:06:16 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef enum e_status
 {
 	EAT = 0,
 	SLEEP,
-	THINK
+	THINK,
+	DIE
 }	t_status;
 
 typedef struct s_fork
@@ -74,7 +75,8 @@ void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
 int		init_fork(t_share *share);
 
-void	*print_philo(void *share);
-int		init_philo(t_philo *philos, t_share *share);
+void	*eat_spaghetti(void *philo_temp);
+void	init_philo(t_philo *philos, t_share *share);
+int		start_philo(t_philo *philos, t_share *share);
 
 #endif
