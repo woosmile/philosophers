@@ -1,7 +1,7 @@
 NAME = philo
 
 CC = cc
-CFLAGS = -Werror -Wall -Wextra -g
+CFLAGS = -Werror -Wall -Wextra -fsanitize=thread
 
 MAKE = make
 MFLAGS = -C
@@ -21,7 +21,8 @@ philo_atoi.c \
 philo_split.c \
 philo_share_init.c \
 philo_share_init_utils.c \
-philo_init.c
+philo_init.c \
+philo_observer_init.c
 
 MANDATORY_OBJS = $(MANDATORY_SRCS:.c=.o)
 
