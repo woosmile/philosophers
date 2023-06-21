@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 13:06:52 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:50:20 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,7 @@ void	time_over_in_action(t_philo *philo)
 {
 	pthread_mutex_lock(&(philo->status_lock));
 	if (philo->status == EATING)
-	{
-		pthread_mutex_unlock(&(philo->share->\
-					fork[philo->index % philo->share->n_philo].lock));
-		pthread_mutex_unlock(&(philo->share->\
-								fork[philo->index - 1].lock));
-	}
+		fork_release(philo);
 	pthread_mutex_unlock(&(philo->status_lock));
 	die_philo(philo);
 }
@@ -54,9 +49,7 @@ int	check_time_before_eat(t_philo *philo)
 	if (elapsed_time > philo->share->t_die)
 	{
 		die_philo(philo);
-		pthread_mutex_unlock(&(philo->share->\
-							fork[philo->index % philo->share->n_philo].lock));
-		pthread_mutex_unlock(&(philo->share->fork[philo->index - 1].lock));
+		fork_release(philo);
 		return (1);
 	}
 	return (0);
@@ -74,6 +67,13 @@ int	fork_grab(t_philo *philo)
 	pthread_mutex_unlock(&(philo->status_lock));
 	philo->share->fork[philo->index % philo->share->n_philo].in_use = 1;
 	print_philo(philo);
+	if (philo->share->n_philo == 1)
+	{
+		pthread_mutex_unlock(&(philo->share->\
+						fork[philo->index % philo->share->n_philo].lock));
+		philo->share->fork[philo->index % philo->share->n_philo].in_use = 0;
+		return (fork);
+	}
 	pthread_mutex_lock(&(philo->share->fork[philo->index - 1].lock));
 	philo->share->fork[philo->index - 1].in_use = 1;
 	print_philo(philo);
@@ -84,9 +84,15 @@ int	fork_grab(t_philo *philo)
 
 void	fork_release(t_philo *philo)
 {
-	philo->share->fork[philo->index % philo->share->n_philo].in_use = 0;
-	philo->share->fork[philo->index - 1].in_use = 0;
-	pthread_mutex_unlock(&(philo->share->\
+	if (philo->share->fork[philo->index % philo->share->n_philo].in_use)
+	{
+		philo->share->fork[philo->index % philo->share->n_philo].in_use = 0;
+		pthread_mutex_unlock(&(philo->share->\
 						fork[philo->index % philo->share->n_philo].lock));
-	pthread_mutex_unlock(&(philo->share->fork[philo->index - 1].lock));
+	}
+	if (philo->share->fork[philo->index - 1].in_use)
+	{
+		philo->share->fork[philo->index - 1].in_use = 0;
+		pthread_mutex_unlock(&(philo->share->fork[philo->index - 1].lock));
+	}
 }
