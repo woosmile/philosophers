@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:17 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/16 18:17:42 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/21 13:01:56 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,10 @@ typedef struct s_share
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
+	int				eat_flag;
 	int				n_eat;
-	t_mutex			n_eat_lock;
-	int				n_eat_flag;
-	int				n_eat_done;
-	t_mutex			n_eat_done_lock; //lock
-	int				die_flag;
-	t_mutex			n_die_flag_lock; //lock
+	t_mutex			end_lock;
+	int				end_flag;
 	t_time			time;
 	t_fork			*fork;
 	t_mutex			print_lock;
@@ -62,47 +59,71 @@ typedef struct s_share
 typedef struct s_philo
 {
 	int				index;
+	t_mutex			status_lock;
 	t_status		status;
 	t_pthread		thread;
 	t_time			time;
+	t_mutex			n_eat_lock;
 	int				n_eat;
 	t_share			*share;
 }	t_philo;
 
-typedef struct s_observer
+typedef struct s_eat
 {
-	int			*eat_rec;
-	t_time		time;
+	int			*rec;
 	t_pthread	thread;
 	t_philo		*philo;
 	t_share		*share;
-}	t_observer;
+}	t_eat;
 
-size_t	ft_strlen(const char *s);
-size_t	ft_numlen(int num);
+typedef struct s_obs
+{
+	t_pthread	thread;
+	t_philo		*philo;
+	t_share		*share;
+}	t_obs;
+
 void	free_double_ptr(char **ptr);
+int		time_diff_calculator(t_time old);
+void	print_philo(t_philo *philo);
+int		check_end_flag(t_share *share);
 
 int		init_share(int ac, char **av, t_share *share);
 int		argv_counter(int ac, char **av);
 int		input_arr(int ac, char **av, int *value);
-int		ft_atoi(const char *str);
 char	**ft_split(char const *s, char c);
+int		ft_atoi(const char *str);
 int		check_str_num(char **split, int idx_s, int *value, int idx_v);
+size_t	ft_strlen(const char *s);
+size_t	ft_numlen(int num);
 void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
 int		init_mutex(t_share *share);
 
-int		time_diff_calculator(t_time old);
-void	print_philo(t_philo *philo);
-
-int		init_philo(t_philo *philos, t_share *share);
-int		philo_thread_join(t_share share, t_philo *philos);
+int		init_philo_thread(t_philo *philos, t_share *share);
 int		start_philo(t_philo *philos, t_share *share);
-void	*think_philo(void *philo_temp);
+int		philo_thread_join(t_share share, t_philo *philos);
+
+int		in_action(t_philo *philo);
 void	eat_spaghetti(t_philo *philo);
 void	sleep_philo(t_philo *philo);
+void	*think_philo(void *philo_temp);
+void	die_philo(t_philo *philo);
 
-int		init_observer(t_observer *obs, t_philo *philos, t_share *share);
-void	*philo_observer(void *obs);
+int		select_action_time(t_philo *philo);
+void	time_over_in_action(t_philo *philo);
+int		check_time_before_eat(t_philo *philo);
+int		fork_grab(t_philo *philo);
+void	fork_release(t_philo *philo);
+
+int		init_check_eat_thread(t_eat *eat, t_philo *philos, t_share *share);
+void	*check_eat_done(void *eat_temp);
+int		check_all_eat(t_eat *eat);
+
+int		init_check_time_thread(t_obs *obs, t_philo *philos, t_share *share);
+void	*check_time_over(void *obs_temp);
+
+int		init_func(t_share *share, t_philo *philos, t_eat *eat, t_obs *obs);
+int		join_func(t_share *share, t_philo *philos, t_eat *eat, t_obs *obs);
 
 #endif
