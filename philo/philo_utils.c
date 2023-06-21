@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/16 14:07:57 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/21 13:02:03 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	print_philo(t_philo *philo)
 	int	time_diff;
 
 	pthread_mutex_lock(&(philo->share->print_lock));
-	if (!philo->share->die_flag)
+	pthread_mutex_lock(&(philo->share->end_lock));
+	if (!philo->share->end_flag)
 	{
 		time_diff = time_diff_calculator(philo->share->time);
+		pthread_mutex_lock(&(philo->status_lock));
 		if (philo->status == EATING)
 			printf("%d %d is eating\n", time_diff, philo->index);
 		else if (philo->status == GRAB)
@@ -58,8 +60,22 @@ void	print_philo(t_philo *philo)
 		else if (philo->status == DIE)
 		{
 			printf("%d %d died\n", time_diff, philo->index);
-			philo->share->die_flag = 1;
+			philo->share->end_flag = 1;
 		}
+		pthread_mutex_unlock(&(philo->status_lock));
 	}
+	pthread_mutex_unlock(&(philo->share->end_lock));
 	pthread_mutex_unlock(&(philo->share->print_lock));
+}
+
+int	check_end_flag(t_share *share)
+{
+	pthread_mutex_lock(&(share->end_lock));
+	if (share->end_flag)
+	{
+		pthread_mutex_unlock(&(share->end_lock));
+		return (1);
+	}
+	pthread_mutex_unlock(&(share->end_lock));
+	return (0);
 }

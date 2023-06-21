@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/16 17:50:52 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/20 19:09:22 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_share(t_share *share)
 		return (1);
 	else if (share->t_sleep < 1)
 		return (1);
-	else if (share->n_eat_flag == 1)
+	else if (share->eat_flag == 1)
 	{
 		if (share->n_eat < 1)
 			return (1);
@@ -66,10 +66,9 @@ void	input_share(int argv_count, int *value, t_share *share)
 	idx_v = 0;
 	while (idx_v < argv_count)
 	{
-		share->n_eat_flag = 0;
+		share->eat_flag = 0;
 		share->n_eat = 0;
-		share->n_eat_done = 0;
-		share->die_flag = 0;
+		share->end_flag = 0;
 		if (idx_v == 0)
 			share->n_philo = value[idx_v];
 		else if (idx_v == 1)
@@ -81,7 +80,7 @@ void	input_share(int argv_count, int *value, t_share *share)
 		else if (idx_v == 4)
 		{
 			share->n_eat = value[idx_v];
-			share->n_eat_flag = 1;
+			share->eat_flag = 1;
 		}
 		idx_v++;
 	}
@@ -104,7 +103,7 @@ int	init_mutex(t_share *share)
 	}
 	if (pthread_mutex_init(&(share->print_lock), NULL))
 		return (1);
-	if (pthread_mutex_init(&(share->n_eat_lock), NULL))
+	if (pthread_mutex_init(&(share->end_lock), NULL))
 		return (1);
 	return (0);
 }

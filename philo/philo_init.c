@@ -6,13 +6,13 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 17:04:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/16 16:46:51 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/21 13:18:55 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_philo(t_philo *philos, t_share *share)
+int	init_philo_thread(t_philo *philos, t_share *share)
 {
 	int	id_p;
 
@@ -23,6 +23,10 @@ int	init_philo(t_philo *philos, t_share *share)
 		philos[id_p].status = THINKING;
 		philos[id_p].n_eat = 0;
 		philos[id_p].share = share;
+		if (pthread_mutex_init(&(philos[id_p].n_eat_lock), NULL))
+			return (1);
+		if (pthread_mutex_init(&(philos[id_p].status_lock), NULL))
+			return (1);
 		id_p++;
 	}
 	return (start_philo(philos, share));
@@ -50,7 +54,7 @@ int	start_philo(t_philo *philos, t_share *share)
 		{
 			id_p = 0;
 			even_odd = 1;
-			usleep(2000);
+			usleep(200);
 		}
 	}
 	return (0);
