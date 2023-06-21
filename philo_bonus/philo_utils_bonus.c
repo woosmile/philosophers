@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*   philo_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/21 13:41:22 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 18:01:21 by woosekim         ###   ########.fr       */
+/*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
+/*   Updated: 2023/06/21 17:30:47 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	main(int ac, char **av)
+void	free_double_ptr(char **ptr)
 {
-	t_share		share;
-	// t_philo		*philos;
-	// t_eat		eat;
-	// t_obs		obs;
-	pid_t			pid_num;
+	int	i;
 
-	pid_num = -1;
-	if (ac < 2)
-		return (1);
-	if (init_share(ac, av, &share))
-		return (1);
-	pid_num = fork();
-	printf("pid : %d\n", pid_num);
-	usleep(100);
-	pid_num = fork();
-	printf("pid : %d\n", pid_num);
-	return (0);
+	if (ptr == NULL)
+		return ;
+	i = 0;
+	while (ptr[i])
+	{
+		free(ptr[i]);
+		i++;
+	}
+	free (ptr);
+}
+
+int	time_diff_calculator(t_time old)
+{
+	t_time	present;
+	int		time_diff;
+
+	if (gettimeofday(&(present), NULL) == -1)
+		return (-1);
+	time_diff = (present.tv_sec - old.tv_sec) * 1000 + \
+				((present.tv_usec - old.tv_usec) / 1000);
+	return (time_diff);
 }
