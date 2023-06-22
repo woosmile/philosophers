@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:42:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 17:03:52 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:35:26 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_philo
 {
 	int				index;
 	t_status		status;
-	t_pthread		thread;
 	t_time			time;
 	int				n_eat;
 	t_share			*share;
@@ -94,16 +93,17 @@ size_t	ft_strlen(const char *s);
 size_t	ft_numlen(int num);
 void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
-int		init_mutex(t_share *share);
 
-int		init_philo_thread(t_philo *philos, t_share *share);
-int		start_philo(t_philo *philos, t_share *share);
-int		philo_thread_join(t_share share, t_philo *philos);
+int		select_action_time(t_philo *philo);
+void	time_over_in_action(t_philo *philo);
+int		check_time_before_eat(t_philo *philo);
+
+void	init_philo(t_philo *philos, t_share *share);
 
 int		in_action(t_philo *philo);
 void	eat_spaghetti(t_philo *philo);
 void	sleep_philo(t_philo *philo);
-void	*think_philo(void *philo_temp);
+void	*think_philo(t_philo *philo);
 void	die_philo(t_philo *philo);
 
 #endif

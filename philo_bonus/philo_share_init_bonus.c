@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 17:31:16 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:35:18 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,21 @@ void	input_share(int argv_count, int *value, t_share *share)
 	}
 }
 
-int	init_mutex(t_share *share)
-{
-	int	id_f;
+// int	init_mutex(t_share *share)
+// {
+// 	int	id_f;
 
-	share->fork = (t_fork *)malloc(sizeof(t_fork) * share->n_philo);
-	if (!share->fork)
-		return (1);
-	id_f = 0;
-	while (id_f < share->n_philo)
-	{
-		share->fork[id_f].in_use = 0;
-		id_f++;
-	}
-	return (0);
-}
+// 	share->fork = (t_fork *)malloc(sizeof(t_fork) * share->n_philo);
+// 	if (!share->fork)
+// 		return (1);
+// 	id_f = 0;
+// 	while (id_f < share->n_philo)
+// 	{
+// 		share->fork[id_f].in_use = 0;
+// 		id_f++;
+// 	}
+// 	return (0);
+// }
 
 int	init_share(int ac, char **av, t_share *share)
 {
@@ -122,7 +122,7 @@ int	init_share(int ac, char **av, t_share *share)
 		return (1);
 	if (gettimeofday(&(share->time), NULL) == -1)
 		return (1);
-	if (init_mutex(share))
-		return (1);
+	// if (init_mutex(share))
+	// 	return (1);
 	return (0);
 }

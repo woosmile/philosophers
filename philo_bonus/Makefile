@@ -22,7 +22,10 @@ philo_bonus.c \
 philo_share_init_bonus.c \
 philo_share_init_utils_bonus.c \
 philo_split_bonus.c \
-philo_utils_bonus.c
+philo_utils_bonus.c \
+philo_init_bonus.c \
+philo_behavior_bonus.c \
+philo_behavior_utils_bonus.c
 
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
