@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:17 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 13:01:56 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:43:47 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <pthread.h>
 # include <string.h>
 
-# define T_UNIT 10
+# define T_UNIT 12
 
 typedef pthread_mutex_t	t_mutex;
 typedef struct timeval	t_time;

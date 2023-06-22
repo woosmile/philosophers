@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 17:04:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 15:28:04 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:37:48 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	start_philo(t_philo *philos, t_share *share)
 		{
 			id_p = 0;
 			even_odd = 1;
-			usleep(200);
+			usleep(T_UNIT * share->n_philo);
 		}
 	}
 	return (0);

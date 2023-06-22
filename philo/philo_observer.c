@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:51:04 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 16:50:18 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:00:53 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int	check_all_eat(t_eat *eat)
 		}
 		id_r++;
 	}
+	if (all_eat)
+	{
+		pthread_mutex_lock(&(eat->share->end_lock));
+		eat->share->end_flag = 1;
+		pthread_mutex_unlock(&(eat->share->end_lock));
+	}
 	return (all_eat);
 }
 
@@ -50,13 +56,9 @@ void	*check_eat_done(void *eat_temp)
 			eat->rec[eat->philo[id_p].index - 1] = 1;
 		pthread_mutex_unlock(&(eat->philo[id_p].n_eat_lock));
 		if (check_all_eat(eat))
-		{
-			pthread_mutex_lock(&(eat->share->end_lock));
-			eat->share->end_flag = 1;
-			pthread_mutex_unlock(&(eat->share->end_lock));
 			break ;
-		}
 		id_p = (id_p + 1) % eat->share->n_philo;
+		usleep((T_UNIT * eat->share->n_philo) * 2);
 	}
 	free(eat->rec);
 	return (NULL);
@@ -83,6 +85,7 @@ void	*check_time_over(void *obs_temp)
 			break ;
 		}
 		id_p = (id_p + 1) % obs->share->n_philo;
+		usleep((T_UNIT * obs->share->n_philo) * 2);
 	}
 	return (NULL);
 }

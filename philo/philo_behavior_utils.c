@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/21 16:50:20 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:27:33 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ int	fork_grab(t_philo *philo)
 	print_philo(philo);
 	if (philo->share->n_philo == 1)
 	{
+		philo->share->fork[philo->index % philo->share->n_philo].in_use = 0;
 		pthread_mutex_unlock(&(philo->share->\
 						fork[philo->index % philo->share->n_philo].lock));
-		philo->share->fork[philo->index % philo->share->n_philo].in_use = 0;
 		return (fork);
 	}
 	pthread_mutex_lock(&(philo->share->fork[philo->index - 1].lock));
