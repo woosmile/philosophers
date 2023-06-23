@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:52:56 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 16:35:24 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:11:26 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,7 @@ int	in_action(t_philo *philo)
 	{
 		usleep(T_UNIT * remain_time);
 		if (time_diff_calculator(philo->time) > philo->share->t_die)
-		{
-			time_over_in_action(philo);
-			return (1);
-		}
+			die_philo(philo);
 	}
 	return (0);
 }
@@ -84,6 +81,7 @@ void	*think_philo(t_philo *philo)
 	// 	return (NULL);
 	// pthread_mutex_lock(&(philo->status_lock));
 	philo->status = THINKING;
+	usleep(T_UNIT * 10);
 	// pthread_mutex_unlock(&(philo->status_lock));
 	print_philo(philo);
 	eat_spaghetti(philo);
@@ -96,7 +94,7 @@ void	die_philo(t_philo *philo)
 	philo->status = DIE;
 	// pthread_mutex_unlock(&(philo->status_lock));
 	print_philo(philo);
+	exit(2);
 	// pthread_mutex_lock(&(philo->share->end_lock));
-	philo->share->end_flag = 1;
 	// pthread_mutex_unlock(&(philo->share->end_lock));
 }

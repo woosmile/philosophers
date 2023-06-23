@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 16:35:18 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:01:40 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	input_share(int argv_count, int *value, t_share *share)
 	{
 		share->eat_flag = 0;
 		share->n_eat = 0;
-		share->end_flag = 0;
 		if (idx_v == 0)
 			share->n_philo = value[idx_v];
 		else if (idx_v == 1)

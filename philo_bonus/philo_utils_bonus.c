@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 16:35:14 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:17:29 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,19 @@ void	print_philo(t_philo *philo)
 
 	// pthread_mutex_lock(&(philo->share->print_lock));
 	// pthread_mutex_lock(&(philo->share->end_lock));
-	if (!philo->share->end_flag)
-	{
-		time_diff = time_diff_calculator(philo->share->time);
-		// pthread_mutex_lock(&(philo->status_lock));
-		if (philo->status == EATING)
-			printf("%d %d is eating\n", time_diff, philo->index);
-		else if (philo->status == GRAB)
-			printf("%d %d has taken a fork\n", time_diff, philo->index);
-		else if (philo->status == SLEEPING)
-			printf("%d %d is sleeping\n", time_diff, philo->index);
-		else if (philo->status == THINKING)
-			printf("%d %d is thinking\n", time_diff, philo->index);
-		else if (philo->status == DIE)
-		{
-			printf("%d %d died\n", time_diff, philo->index);
-			philo->share->end_flag = 1;
-		}
-		// pthread_mutex_unlock(&(philo->status_lock));
-	}
+	sem_wait(philo->share->print_sem);
+	time_diff = time_diff_calculator(philo->share->time);
+	if (philo->status == EATING)
+		printf("%d %d is eating\n", time_diff, philo->index);
+	else if (philo->status == GRAB)
+		printf("%d %d has taken a fork\n", time_diff, philo->index);
+	else if (philo->status == SLEEPING)
+		printf("%d %d is sleeping\n", time_diff, philo->index);
+	else if (philo->status == THINKING)
+		printf("%d %d is thinking\n", time_diff, philo->index);
+	else if (philo->status == DIE)
+		printf("%d %d died\n", time_diff, philo->index);
+	sem_post(philo->share->print_sem);
 	// pthread_mutex_unlock(&(philo->share->end_lock));
 	// pthread_mutex_unlock(&(philo->share->print_lock));
 }

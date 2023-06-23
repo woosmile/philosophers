@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:42:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 16:35:26 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:13:21 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <string.h>
 # include <semaphore.h>
 
-# define T_UNIT 10
+# define T_UNIT 12
 
 typedef struct timeval	t_time;
 typedef pthread_t		t_pthread;
@@ -50,7 +50,7 @@ typedef struct s_share
 	int				t_sleep;
 	int				eat_flag;
 	int				n_eat;
-	int				end_flag;
+	sem_t			*print_sem;
 	t_time			time;
 	t_fork			*fork;
 }	t_share;
@@ -95,7 +95,6 @@ void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
 
 int		select_action_time(t_philo *philo);
-void	time_over_in_action(t_philo *philo);
 int		check_time_before_eat(t_philo *philo);
 
 void	init_philo(t_philo *philos, t_share *share);

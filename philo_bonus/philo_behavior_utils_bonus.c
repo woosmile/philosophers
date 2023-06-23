@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 16:35:23 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 19:14:38 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@ int	select_action_time(t_philo *philo)
 	return (action_time);
 }
 
-void	time_over_in_action(t_philo *philo)
-{
-	// pthread_mutex_lock(&(philo->status_lock));
-	// if (philo->status == EATING)
-		// fork_release(philo);
-	// pthread_mutex_unlock(&(philo->status_lock));
-	die_philo(philo);
-}
-
 int	check_time_before_eat(t_philo *philo)
 {
 	int	elapsed_time;
@@ -48,9 +39,8 @@ int	check_time_before_eat(t_philo *philo)
 		return (1);
 	if (elapsed_time > philo->share->t_die)
 	{
-		die_philo(philo);
 		// fork_release(philo);
-		return (1);
+		die_philo(philo);
 	}
 	return (0);
 }
