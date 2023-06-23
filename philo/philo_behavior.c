@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:52:56 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 19:19:17 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:01:23 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	*think_philo(void *philo_temp)
 	pthread_mutex_lock(&(philo->status_lock));
 	philo->status = THINKING;
 	pthread_mutex_unlock(&(philo->status_lock));
+	usleep(T_UNIT * 10);
 	print_philo(philo);
 	eat_spaghetti(philo);
 	return (NULL);

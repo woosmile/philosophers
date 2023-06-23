@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:51:04 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 20:00:53 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 13:19:20 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	*check_eat_done(void *eat_temp)
 
 	eat = (t_eat *)eat_temp;
 	id_p = 0;
+	usleep((T_UNIT * eat->share->n_philo) * 2);
 	while (1)
 	{
 		if (check_end_flag(eat->share))
@@ -58,7 +59,7 @@ void	*check_eat_done(void *eat_temp)
 		if (check_all_eat(eat))
 			break ;
 		id_p = (id_p + 1) % eat->share->n_philo;
-		usleep((T_UNIT * eat->share->n_philo) * 2);
+		usleep(T_UNIT * 10);
 	}
 	free(eat->rec);
 	return (NULL);
@@ -72,6 +73,7 @@ void	*check_time_over(void *obs_temp)
 
 	obs = (t_obs *)obs_temp;
 	id_p = 0;
+	usleep((T_UNIT * obs->share->n_philo) * 2);
 	while (1)
 	{
 		if (check_end_flag(obs->share))
@@ -85,7 +87,7 @@ void	*check_time_over(void *obs_temp)
 			break ;
 		}
 		id_p = (id_p + 1) % obs->share->n_philo;
-		usleep((T_UNIT * obs->share->n_philo) * 2);
+		usleep(T_UNIT * 10);
 	}
 	return (NULL);
 }

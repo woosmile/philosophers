@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 20:27:33 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/23 18:44:29 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	check_time_before_eat(t_philo *philo)
 		return (1);
 	if (elapsed_time > philo->share->t_die)
 	{
-		die_philo(philo);
 		fork_release(philo);
+		die_philo(philo);
 		return (1);
 	}
 	return (0);
@@ -62,10 +62,10 @@ int	fork_grab(t_philo *philo)
 	fork = 0;
 	pthread_mutex_lock(&(philo->share->\
 					fork[philo->index % philo->share->n_philo].lock));
+	philo->share->fork[philo->index % philo->share->n_philo].in_use = 1;
 	pthread_mutex_lock(&(philo->status_lock));
 	philo->status = GRAB;
 	pthread_mutex_unlock(&(philo->status_lock));
-	philo->share->fork[philo->index % philo->share->n_philo].in_use = 1;
 	print_philo(philo);
 	if (philo->share->n_philo == 1)
 	{
