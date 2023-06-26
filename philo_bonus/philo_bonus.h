@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:42:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/23 19:13:21 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:34:44 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <pthread.h>
 # include <string.h>
 # include <semaphore.h>
+# include <errno.h>
 
 # define T_UNIT 12
 
@@ -37,47 +38,33 @@ typedef enum e_status
 	DIE,
 }	t_status;
 
-typedef struct s_fork
-{
-	int		in_use;
-}	t_fork;
-
 typedef struct s_share
 {
-	int				n_philo;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
-	int				eat_flag;
-	int				n_eat;
-	sem_t			*print_sem;
-	t_time			time;
-	t_fork			*fork;
+	int		n_philo;
+	int		t_die;
+	int		t_eat;
+	int		t_sleep;
+	t_time	time;
+	int		eat_flag;
+	sem_t	*eat_sem;
+	t_time		eat_sem_time;
+	t_pthread	eat_sem_in;
+	t_pthread	check_eat_sem_time;
+	int		n_eat;
+	sem_t	*fork_sem;
+	sem_t	*print_sem;
 }	t_share;
 
 typedef struct s_philo
 {
-	int				index;
-	t_status		status;
-	t_time			time;
-	int				n_eat;
-	t_share			*share;
+	int			index;
+	t_status	status;
+	t_time		time;
+	int			n_eat;
+	t_share		*share;
+	sem_t		*die_lock;
+	t_pthread	fork_wait;
 }	t_philo;
-
-typedef struct s_eat
-{
-	int			*rec;
-	t_pthread	thread;
-	t_philo		*philo;
-	t_share		*share;
-}	t_eat;
-
-typedef struct s_obs
-{
-	t_pthread	thread;
-	t_philo		*philo;
-	t_share		*share;
-}	t_obs;
 
 void	free_double_ptr(char **ptr);
 int		time_diff_calculator(t_time old);
@@ -97,12 +84,27 @@ int		check_share(t_share *share);
 int		select_action_time(t_philo *philo);
 int		check_time_before_eat(t_philo *philo);
 
-void	init_philo(t_philo *philos, t_share *share);
+char	*ft_itoa(int n);
+char	**init_die_lock_name(int n_philo);
+int		init_philo(t_philo *philos, t_share *share);
+int		start_philo(t_philo *philos, t_share *share);
 
 int		in_action(t_philo *philo);
 void	eat_spaghetti(t_philo *philo);
 void	sleep_philo(t_philo *philo);
 void	*think_philo(t_philo *philo);
 void	die_philo(t_philo *philo);
+
+void	fork_grab(t_philo *philo);
+void	fork_release(t_philo *philo);
+
+int		init_fork_wait_thread(t_philo *philo);
+void	*check_time_over(void *obs_temp);
+
+int		init_check_eat_thread(t_share *share);
+void	*eat_sem_in(void *eat_temp);
+void	*check_eat_sem_time(void *share_temp);
+
+int	sem_unlink_func(void);
 
 #endif

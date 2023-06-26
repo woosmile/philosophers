@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/23 16:01:40 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:39:06 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,22 @@ void	input_share(int argv_count, int *value, t_share *share)
 	}
 }
 
-// int	init_mutex(t_share *share)
-// {
-// 	int	id_f;
-
-// 	share->fork = (t_fork *)malloc(sizeof(t_fork) * share->n_philo);
-// 	if (!share->fork)
-// 		return (1);
-// 	id_f = 0;
-// 	while (id_f < share->n_philo)
-// 	{
-// 		share->fork[id_f].in_use = 0;
-// 		id_f++;
-// 	}
-// 	return (0);
-// }
+int	init_sem(t_share *share)
+{
+	share->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
+	if (share->print_sem == SEM_FAILED)
+		return (1);
+	share->fork_sem = sem_open("fork_sem", O_CREAT, 0644, share->n_philo);
+	if (share->fork_sem == SEM_FAILED)
+		return (1);
+	if (share->eat_flag)
+	{
+		share->eat_sem = sem_open("eat_sem", O_CREAT, 0644, share->n_eat * share->n_philo);
+		if (share->eat_sem == SEM_FAILED)
+			return (1);
+	}
+	return (0);
+}
 
 int	init_share(int ac, char **av, t_share *share)
 {
@@ -121,7 +122,9 @@ int	init_share(int ac, char **av, t_share *share)
 		return (1);
 	if (gettimeofday(&(share->time), NULL) == -1)
 		return (1);
-	// if (init_mutex(share))
-	// 	return (1);
+	if (gettimeofday(&(share->eat_sem_time), NULL) == -1)
+		return (1);
+	if (init_sem(share))
+		return (1);
 	return (0);
 }

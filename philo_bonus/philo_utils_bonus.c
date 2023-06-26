@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/23 19:17:29 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/26 15:54:16 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	print_philo(t_philo *philo)
 	else if (philo->status == THINKING)
 		printf("%d %d is thinking\n", time_diff, philo->index);
 	else if (philo->status == DIE)
+	{
 		printf("%d %d died\n", time_diff, philo->index);
+		exit(2);
+	}
 	sem_post(philo->share->print_sem);
 	// pthread_mutex_unlock(&(philo->share->end_lock));
 	// pthread_mutex_unlock(&(philo->share->print_lock));
