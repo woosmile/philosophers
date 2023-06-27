@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 14:45:36 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:13:53 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,11 @@ void	print_philo(t_philo *philo)
 	sem_post(philo->share->print_sem);
 }
 
-int	sem_unlink_func(void)
+void	sem_unlink_func(void)
 {
 	sem_unlink("print_sem");
 	sem_unlink("fork_sem");
 	sem_unlink("eat_sem");
-	return (0);
 }
 
 void	wait_philo(t_share *share)

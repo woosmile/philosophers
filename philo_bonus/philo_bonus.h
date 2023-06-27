@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:42:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 15:22:07 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 18:58:51 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_philo
 	t_pthread	fork_wait;
 }	t_philo;
 
-int		sem_unlink_func(void);
+void	sem_unlink_func(void);
 void	free_double_ptr(char **ptr);
 int		time_diff_calculator(t_time old);
 void	print_philo(t_philo *philo);
@@ -83,7 +83,6 @@ void	input_share(int argv_count, int *value, t_share *share);
 int		check_share(t_share *share);
 
 int		select_action_time(t_philo *philo);
-int		check_time_before_eat(t_philo *philo);
 
 char	*ft_itoa(int n);
 int		init_philo(t_philo *philos, t_share *share);

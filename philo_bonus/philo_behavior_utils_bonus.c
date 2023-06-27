@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 15:22:08 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:37:36 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,30 +37,19 @@ int	in_action(t_philo *philo)
 	remain_time = philo->share->t_die - time_diff_calculator(philo->time);
 	if (remain_time == 0)
 		remain_time = 1;
-	action_time = select_action_time(philo);
 	print_philo(philo);
 	if (gettimeofday(&(start_time), NULL) == -1)
 		return (1);
+	action_time = select_action_time(philo);
 	while (time_diff_calculator(start_time) < action_time)
 	{
 		usleep(T_UNIT * remain_time);
 		if (time_diff_calculator(philo->time) > philo->share->t_die)
+		{
+			if (philo->status == EATING)
+				fork_release(philo);
 			die_philo(philo);
-	}
-	return (0);
-}
-
-int	check_time_before_eat(t_philo *philo)
-{
-	int	elapsed_time;
-
-	elapsed_time = time_diff_calculator(philo->time);
-	if (elapsed_time == -1)
-		return (1);
-	if (elapsed_time > philo->share->t_die)
-	{
-		fork_release(philo);
-		die_philo(philo);
+		}
 	}
 	return (0);
 }

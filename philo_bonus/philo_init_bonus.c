@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 17:04:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 14:44:07 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:48:15 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	philo_process_setup(t_philo *philos, int id_p)
 	if (pthread_create(&(philos[id_p].fork_wait), NULL, \
 						check_time_over, &philos[id_p]))
 		return (1);
-	think_philo(&philos[id_p]);
+	eat_spaghetti(&philos[id_p]);
 	if (pthread_join(philos[id_p].fork_wait, NULL))
 		return (1);
 	return (0);
@@ -57,8 +57,12 @@ int	start_philo(t_philo *philos, t_share *share)
 	int	even_odd;
 	int	pid;
 
-	id_p = 0;
+	id_p = 1;
 	even_odd = 0;
+	if (gettimeofday(&(share->time), NULL) == -1)
+		return (1);
+	if (gettimeofday(&(share->eat_sem_time), NULL) == -1)
+		return (1);
 	while (id_p < share->n_philo)
 	{
 		if ((philos[id_p].index % 2) == even_odd)

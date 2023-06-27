@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:52:56 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 15:22:01 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:37:15 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	eat_spaghetti(t_philo *philo)
 {
 	fork_grab(philo);
-	if (check_time_before_eat(philo))
-		return ;
 	philo->status = EATING;
 	if (in_action(philo))
 		return ;
@@ -41,6 +39,7 @@ void	sleep_philo(t_philo *philo)
 void	*think_philo(t_philo *philo)
 {
 	philo->status = THINKING;
+	usleep(T_UNIT * 10);
 	print_philo(philo);
 	eat_spaghetti(philo);
 	return (NULL);
