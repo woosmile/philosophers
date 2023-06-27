@@ -2,7 +2,7 @@ NAME = philo_bonus
 
 CC = cc
 
-#CFLAGS = -Werror -Wall -Wextra -fsanitize=thread -g
+#CFLAGS = -Werror -Wall -Wextra -fsanitize=thread -g3
 CFLAGS = -Werror -Wall -Wextra
 
 MAKE = make
@@ -18,17 +18,17 @@ INCLUDES = -I.
 
 BONUS_SRCS = \
 philo_atoi_bonus.c \
+philo_behavior_bonus.c \
+philo_behavior_utils_bonus.c \
 philo_bonus.c \
+philo_init_bonus.c \
+philo_itoa_bonus.c \
+philo_observer_bonus.c \
+philo_observer_init_bonus.c \
 philo_share_init_bonus.c \
 philo_share_init_utils_bonus.c \
 philo_split_bonus.c \
-philo_utils_bonus.c \
-philo_init_bonus.c \
-philo_behavior_bonus.c \
-philo_behavior_utils_bonus.c \
-philo_observer_bonus.c \
-philo_observer_init_bonus.c \
-philo_itoa_bonus.c
+philo_utils_bonus.c
 
 BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 

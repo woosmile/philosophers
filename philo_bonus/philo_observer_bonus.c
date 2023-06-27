@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:51:04 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/26 20:49:57 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 15:52:48 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	*check_time_over(void *philo_temp)
 {
 	int		elapsed_time;
 	t_philo	*philo;
+	int		time_diff;
 
 	philo = (t_philo *)philo_temp;
 	usleep((T_UNIT * philo->share->n_philo) * 2);
@@ -23,11 +24,13 @@ void	*check_time_over(void *philo_temp)
 	{
 		elapsed_time = time_diff_calculator(philo->time);
 		if (elapsed_time == -1)
-			break ;
+			return (NULL);
 		if (elapsed_time >= philo->share->t_die)
 		{
-			die_philo(philo);
-			break ;
+			time_diff = time_diff_calculator(philo->share->time);
+			sem_wait(philo->share->print_sem);
+			printf("%d %d died\n", time_diff, philo->index);
+			exit(2);
 		}
 		usleep(T_UNIT * 10);
 	}
@@ -59,19 +62,10 @@ void	*check_eat_sem_time(void *share_temp)
 	while (1)
 	{
 		elapsed_time = time_diff_calculator(share->eat_sem_time);
-		//elapsed_time = 2;
 		if (elapsed_time == -1)
 			break ;
-		if (elapsed_time >= 1)
-		{
-			printf("in?\n");
-			sem_unlink_func();
-			sem_close(share->print_sem);
-			sem_close(share->fork_sem);
-			sem_close(share->eat_sem);
+		if (elapsed_time > 1)
 			kill(0, SIGINT);
-			exit(0);
-		}
 		usleep(T_UNIT * 10);
 	}
 	return (NULL);

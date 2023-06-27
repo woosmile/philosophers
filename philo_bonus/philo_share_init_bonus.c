@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/26 20:39:06 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:39:09 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	init_sem(t_share *share)
 		return (1);
 	if (share->eat_flag)
 	{
-		share->eat_sem = sem_open("eat_sem", O_CREAT, 0644, share->n_eat * share->n_philo);
+		share->eat_sem = sem_open("eat_sem", O_CREAT, 0644, share->n_philo);
 		if (share->eat_sem == SEM_FAILED)
 			return (1);
 	}

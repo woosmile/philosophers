@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:35:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/26 20:42:59 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 12:08:28 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 
 int	init_check_eat_thread(t_share *share)
 {
+	if (!share->eat_flag)
+		return (0);
 	if (pthread_create(&(share->eat_sem_in), NULL, eat_sem_in, share))
 		return (1);
-	if (pthread_create(&(share->check_eat_sem_time), NULL, check_eat_sem_time, share))
+	if (pthread_create(&(share->check_eat_sem_time), NULL, \
+						check_eat_sem_time, share))
 		return (1);
 	return (0);
 }
 
-int	init_fork_wait_thread(t_philo *philo)
+int	join_check_eat_thread(t_share *share)
 {
-	if (pthread_create(&(philo->fork_wait), NULL, check_time_over, philo))
+	if (!share->eat_flag)
+		return (0);
+	if (pthread_join(share->eat_sem_in, NULL))
+		return (1);
+	if (pthread_join(share->check_eat_sem_time, NULL))
 		return (1);
 	return (0);
 }

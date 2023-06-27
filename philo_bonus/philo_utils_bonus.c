@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:20 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/26 15:54:16 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 14:45:36 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	print_philo(t_philo *philo)
 {
 	int	time_diff;
 
-	// pthread_mutex_lock(&(philo->share->print_lock));
-	// pthread_mutex_lock(&(philo->share->end_lock));
 	sem_wait(philo->share->print_sem);
 	time_diff = time_diff_calculator(philo->share->time);
 	if (philo->status == EATING)
@@ -61,6 +59,27 @@ void	print_philo(t_philo *philo)
 		exit(2);
 	}
 	sem_post(philo->share->print_sem);
-	// pthread_mutex_unlock(&(philo->share->end_lock));
-	// pthread_mutex_unlock(&(philo->share->print_lock));
+}
+
+int	sem_unlink_func(void)
+{
+	sem_unlink("print_sem");
+	sem_unlink("fork_sem");
+	sem_unlink("eat_sem");
+	return (0);
+}
+
+void	wait_philo(t_share *share)
+{
+	int	id_p;
+	int	status;
+
+	id_p = 0;
+	while (id_p < share->n_philo)
+	{
+		waitpid(0, &status, 0);
+		if (WIFEXITED(status))
+			kill(0, SIGINT);
+		id_p++;
+	}
 }
