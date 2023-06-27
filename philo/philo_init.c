@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 17:04:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 20:37:48 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:33:50 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,16 @@ int	init_philo_thread(t_philo *philos, t_share *share)
 	return (start_philo(philos, share));
 }
 
+void	even_odd_change(t_share *share, int *even_odd, int *id_p)
+{
+	if (*id_p == share->n_philo && *even_odd == 0)
+	{
+		*id_p = 0;
+		*even_odd = 1;
+		usleep(T_UNIT * share->n_philo);
+	}
+}
+
 int	start_philo(t_philo *philos, t_share *share)
 {
 	int	id_p;
@@ -39,6 +49,8 @@ int	start_philo(t_philo *philos, t_share *share)
 
 	id_p = 0;
 	even_odd = 0;
+	if (gettimeofday(&(share->time), NULL) == -1)
+		return (1);
 	while (id_p < share->n_philo)
 	{
 		if ((philos[id_p].index % 2) == even_odd)
@@ -50,12 +62,7 @@ int	start_philo(t_philo *philos, t_share *share)
 				return (1);
 		}
 		id_p++;
-		if (id_p == share->n_philo && even_odd == 0)
-		{
-			id_p = 0;
-			even_odd = 1;
-			usleep(T_UNIT * share->n_philo);
-		}
+		even_odd_change(share, &even_odd, &id_p);
 	}
 	return (0);
 }

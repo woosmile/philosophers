@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:52:56 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 14:47:03 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:46:45 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	in_action(t_philo *philo)
 	remain_time = philo->share->t_die - time_diff_calculator(philo->time);
 	if (remain_time == 0)
 		remain_time = 1;
-	action_time = select_action_time(philo);
 	print_philo(philo);
 	if (gettimeofday(&(start_time), NULL) == -1)
 		return (1);
+	action_time = select_action_time(philo);
 	while (time_diff_calculator(start_time) < action_time)
 	{
 		usleep(T_UNIT * remain_time);

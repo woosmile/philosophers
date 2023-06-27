@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 15:21:59 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/22 20:38:33 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:31:33 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ int	init_share(int ac, char **av, t_share *share)
 	input_share(argv_count, value, share);
 	free(value);
 	if (check_share(share))
-		return (1);
-	if (gettimeofday(&(share->time), NULL) == -1)
 		return (1);
 	if (init_mutex(share))
 		return (1);
