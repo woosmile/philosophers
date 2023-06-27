@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:41:22 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 15:58:44 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:04:06 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 
 	if (ac < 2)
 		return (1);
-	if (sem_unlink_fㅌunc())
+	if (sem_unlink_func())
 		return (1);
 	if (init_share(ac, av, &share))
 		return (1);
