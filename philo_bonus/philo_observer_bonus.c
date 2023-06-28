@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:51:04 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 15:52:48 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:53:36 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*check_time_over(void *philo_temp)
 	int		time_diff;
 
 	philo = (t_philo *)philo_temp;
-	usleep((T_UNIT * philo->share->n_philo) * 2);
+	usleep((T_UNIT * philo->share->n_philo) * 3);
 	while (1)
 	{
 		elapsed_time = time_diff_calculator(philo->time);
@@ -42,6 +42,7 @@ void	*eat_sem_in(void *share_temp)
 	t_share	*share;
 
 	share = (t_share *)share_temp;
+	usleep((T_UNIT * share->n_philo) * 3);
 	while (1)
 	{
 		sem_wait(share->eat_sem);
@@ -59,6 +60,7 @@ void	*check_eat_sem_time(void *share_temp)
 	int		elapsed_time;
 
 	share = (t_share *)share_temp;
+	usleep((T_UNIT * share->n_philo) * 3);
 	while (1)
 	{
 		elapsed_time = time_diff_calculator(share->eat_sem_time);

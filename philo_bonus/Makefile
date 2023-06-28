@@ -2,7 +2,6 @@ NAME = philo_bonus
 
 CC = cc
 
-#CFLAGS = -Werror -Wall -Wextra -fsanitize=thread -g3
 CFLAGS = -Werror -Wall -Wextra
 
 MAKE = make

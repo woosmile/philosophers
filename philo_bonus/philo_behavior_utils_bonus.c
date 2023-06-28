@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:53:39 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 19:37:36 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:34:15 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	in_action(t_philo *philo)
 	t_time	start_time;
 
 	remain_time = philo->share->t_die - time_diff_calculator(philo->time);
-	if (remain_time == 0)
+	if (remain_time <= 0)
 		remain_time = 1;
 	print_philo(philo);
 	if (gettimeofday(&(start_time), NULL) == -1)
@@ -45,11 +45,7 @@ int	in_action(t_philo *philo)
 	{
 		usleep(T_UNIT * remain_time);
 		if (time_diff_calculator(philo->time) > philo->share->t_die)
-		{
-			if (philo->status == EATING)
-				fork_release(philo);
 			die_philo(philo);
-		}
 	}
 	return (0);
 }
@@ -59,8 +55,6 @@ void	fork_grab(t_philo *philo)
 	sem_wait(philo->share->fork_sem);
 	philo->status = GRAB;
 	print_philo(philo);
-	if (philo->share->n_philo == 1)
-		sem_post(philo->share->fork_sem);
 	sem_wait(philo->share->fork_sem);
 	print_philo(philo);
 }

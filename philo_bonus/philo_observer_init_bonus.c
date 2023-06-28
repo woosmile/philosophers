@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 16:35:40 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 12:08:28 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/28 13:28:05 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	init_check_eat_thread(t_share *share)
 		return (0);
 	if (pthread_create(&(share->eat_sem_in), NULL, eat_sem_in, share))
 		return (1);
+	usleep(T_UNIT * 10);
 	if (pthread_create(&(share->check_eat_sem_time), NULL, \
 						check_eat_sem_time, share))
 		return (1);
