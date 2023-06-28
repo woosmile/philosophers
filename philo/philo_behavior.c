@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 19:52:56 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 19:46:45 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:47:58 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int	in_action(t_philo *philo)
 	int		action_time;
 	t_time	start_time;
 
+	if (philo->share->end_flag)
+		return (0);
 	remain_time = philo->share->t_die - time_diff_calculator(philo->time);
-	if (remain_time == 0)
+	if (remain_time <= 0)
 		remain_time = 1;
 	print_philo(philo);
 	if (gettimeofday(&(start_time), NULL) == -1)
@@ -30,8 +32,8 @@ int	in_action(t_philo *philo)
 		usleep(T_UNIT * remain_time);
 		if (time_diff_calculator(philo->time) > philo->share->t_die)
 		{
-			time_over_in_action(philo);
-			return (1);
+			die_philo(philo);
+			break ;
 		}
 	}
 	return (0);
@@ -46,8 +48,6 @@ void	eat_spaghetti(t_philo *philo)
 	fork = fork_grab(philo);
 	if (fork == 2)
 	{
-		if (check_time_before_eat(philo))
-			return ;
 		pthread_mutex_lock(&(philo->status_lock));
 		philo->status = EATING;
 		pthread_mutex_unlock(&(philo->status_lock));

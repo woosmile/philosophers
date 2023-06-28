@@ -6,7 +6,7 @@
 /*   By: woosekim <woosekim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 14:06:17 by woosekim          #+#    #+#             */
-/*   Updated: 2023/06/27 19:44:35 by woosekim         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:34:48 by woosekim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,15 +105,14 @@ void	even_odd_change(t_share *share, int *even_odd, int *id_p);
 int		start_philo(t_philo *philos, t_share *share);
 int		philo_thread_join(t_share share, t_philo *philos);
 
+int		select_action_time(t_philo *philo);
 int		in_action(t_philo *philo);
-int		check_time_before_eat(t_philo *philo);
+
 void	eat_spaghetti(t_philo *philo);
 void	sleep_philo(t_philo *philo);
 void	*think_philo(void *philo_temp);
 void	die_philo(t_philo *philo);
 
-int		select_action_time(t_philo *philo);
-void	time_over_in_action(t_philo *philo);
 int		fork_grab(t_philo *philo);
 void	fork_release(t_philo *philo);
 
